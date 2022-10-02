@@ -1,0 +1,20 @@
+---
+title: "About Me "
+image: /about/aspen-profile.jpg
+about:
+  template: jolla
+  links:
+    - icon: twitter
+      text: Twitter
+      href: https://twitter.com/joshfangmeier
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/jfangmeier/
+    - icon: github
+      text: Github
+      href: https://github.com/jfangmeier
+---
+
+I am a research director in state government. My professional interests are in the intersection of health policy, health care financing, and how data can lead to more effective decision making processes to improve health.
+
+On this personal site, I share some side projects where I apply my own data learnings to interesting questions in health care, sports, the outdoors, or whatever strikes my fancy. Opinions shared here reflect my own views and not those of my employer.

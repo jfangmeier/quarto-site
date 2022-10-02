@@ -1,0 +1,22 @@
+project:
+  type: website
+
+website:
+  title: "Josh Fangmeier"
+  twitter-card: true
+  navbar:
+    right:
+      - about.qmd
+      - icon: github
+        href: https://github.com/jfangmeier
+      - icon: twitter
+        href: https://twitter.com/joshfangmeier
+      - icon: linkedin
+        href: https://www.linkedin.com/in/jfangmeier/
+format:
+  html:
+    theme: theme.scss
+    highlight-style: eiffel
+
+editor: visual
+

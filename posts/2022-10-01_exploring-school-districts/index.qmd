@@ -1,0 +1,481 @@
+---
+title: "Exploring the Oddities of Public School Districts"
+date: "2022-10-01"
+categories: [geospatial, sf]
+image: "banner.PNG"
+draft: false
+execute: 
+  warning: false
+  error: false
+  output: true
+---
+
+![](banner.PNG){style="border: 5px solid #555;" fig-alt="Map of school district boundaries for central United States"}
+
+Several weeks ago, I came across the tweet below from [Kyle Walker](https://twitter.com/kyle_e_walker) who shared an example of how to pull a large amount of geospatial data with a few lines of code using the tigris package that he developed. The school district data that he showed in his example stood out for the complex boundaries of some states (i.e., Nebraska) compared to bordering states. In this post, I'm going to go through a brief exploration of American public school district boundaries using the tigris and sf packages, along with a tidyverse-style workflow, and identify how some districts are drawn much more differently than others.
+
+<div>
+
+<blockquote class="twitter-tweet">
+
+<p lang="en" dir="ltr">
+
+Whoa, Nebraska really stands out with all the school district exclaves. <a href="https://t.co/3hX9BMYPf2">pic.twitter.com/3hX9BMYPf2</a>
+
+</p>
+
+--- Josh Fangmeier (@joshfangmeier) <a href="https://twitter.com/joshfangmeier/status/1555327369002500098?ref_src=twsrc%5Etfw">August 4, 2022</a>
+
+</blockquote>
+
+```{=html}
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+```
+
+</div>
+
+## Load school district data
+
+To retrieve the school district boundary data, we will use the tigris package, which downloads and loads TIGER/Line shapefiles from the US Census bureau. The `school_districts` function in tigris downloads school district data, which the Census bureau collects from state education officials. For our analysis, we will use data on unified and elementary districts as of 2021, which combined gives us very good coverage.
+
+```{r}
+library(tidyverse)
+library(sf)
+library(tigris)
+library(mapview)
+library(rmapshaper)
+library(nngeo)
+library(gt)
+library(gtExtras)
+library(measurements)
+```
+
+::: callout-note
+## Not all states have elementary districts, so we use the `safely` workflow from the purrr package to keep states that do.
+:::
+
+```{r}
+#| echo: false
+
+sch_sf <- read_rds(here::here("data", "school-districts", "sch_sf.rds"))
+sch_simp <- read_rds(here::here("data", "school-districts", "sch_simp.rds"))
+sch_poly_sf <- read_rds(here::here("data", "school-districts", "sch_poly_sf.rds"))
+sch_compactness <- read_rds(here::here("data", "school-districts", "sch_compactness.rds"))
+sch_rem_holes_sf <- read_rds(here::here("data", "school-districts", "sch_rem_holes_sf.rds"))
+```
+
+```{r}
+#| eval: false
+
+sch_uni_sf <- 
+  map_dfr(
+    c(state.abb, "DC"),
+    ~school_districts(
+      state = .x,
+      type = "unified",
+      year = 2021,
+      progress_bar = F
+    )
+  )
+
+safe_school_districts <- safely(school_districts)
+
+sch_ele_sf <- 
+  map(
+    c(state.abb, "DC"),
+    ~safe_school_districts(
+      state = .x,
+      type = "elementary",
+      year = 2021,
+      progress_bar = F
+    )
+  ) %>% 
+  map("result") %>% 
+  compact() %>% 
+  bind_rows()
+
+fips <- 
+  tigris::fips_codes %>% 
+  select(
+    STATEFP = state_code,
+    STUSPS = state,
+    STATE_NAME = state_name) %>% 
+  distinct()
+
+sch_sf <- 
+  bind_rows(
+    sch_uni_sf,
+    sch_ele_sf
+    ) %>% 
+  inner_join(
+    fips,
+    by = "STATEFP"
+  )
+
+```
+
+```{r}
+#| collapse: true
+
+glimpse(sch_sf)
+```
+
+We can see that resulting data frame includes a geometry column of the 'MULTIPOLYGON' class. This means that each row (school district) may contains more than one land parcel.
+
+To preview the school district boundaries, we can create a simplified map with `ms_simplify` from the rmapshaper package and view it with the `mapView` function.
+
+```{r}
+#| eval: false
+
+sch_simp <- 
+  ms_simplify(
+    sch_sf, 
+    sys = T, 
+    sys_mem = 4)
+```
+
+```{r}
+#| output: false
+
+m <- mapview(sch_simp)
+m
+```
+
+```{r}
+m@map %>% 
+  leaflet::setView(-96, 39, zoom = 4)
+```
+
+## Split districts into separate polygons
+
+Since I'm interested in understanding the boundaries of school districts and how many non-contiguous parcels some districts contains, we will split the districts into separate polygons. We can use the `ms_explode` function from the rmapshaper package to convert the data frame from a 'MULTIPOLYGON' geometry type to 'POLYGON'. We will also add a row identifier to help keep track of each polygon.
+
+```{r}
+#| eval: false
+
+sch_poly_sf <- 
+  ms_explode(
+    sch_sf, 
+    sys = T, 
+    sys_mem = 4) %>% 
+  group_by(NAME, STUSPS) %>% 
+  mutate(ID = row_number()) %>% 
+  ungroup()
+```
+
+```{r}
+#| collapse: true
+
+glimpse(sch_poly_sf)
+```
+
+We can see above that the geometry column is now a 'POLYGON' geometry type, and we can now quickly calculate the median number of non-contiguous land parcels in each district. We can see below that Hawaii has one district for the whole state with 17 parcels (islands separated by water in this case). However, Nebraska (a very landlocked state) has a median number of 16 parcels per district, much higher than neighboring South Dakota with 3 parcels per district.
+
+```{r}
+#| collapse: true
+
+sch_poly_count <- 
+  sch_poly_sf %>% 
+  st_drop_geometry() %>% 
+  count(STUSPS, NAME)
+
+sch_poly_count %>% 
+  group_by(STUSPS) %>% 
+  summarize(
+    SCH_DISTRICTS = n(),
+    MEDIAN_PARCELS = median(n)) %>% 
+  arrange(desc(MEDIAN_PARCELS)) %>% 
+  head(10)
+```
+
+## Measure the 'compactness' of each district
+
+Along with calculating the number of land parcels, we can also measure the degree of 'compactness' that a school district has. [Compactness measures](https://fisherzachary.github.io/public/r-output.html) are often used to determine the amount of gerrymandering of political districts. One measure is the convex hull score, which is the ratio of the area of the district to the area of the smallest convex polygon that could envelop the district.
+
+Here is a quick illustration of a convex hull drawn around a district (in red). Convex hull scores range from 0 to 1, with scores closer to 1 indicating more compactness.
+
+```{r}
+#| dpi: 300
+
+ggplot() +
+  geom_sf(data = sch_sf %>% slice(1), fill = "red") +
+  geom_sf(data = sch_sf %>% slice(1) %>% st_convex_hull(), fill = NA, size = 1) +
+  theme_void()
+```
+
+To calculate convex hull scores for all the districts, we can write a function that calculates the score for a district after the areas of the district and convex hull are calculated.
+
+```{r}
+ch_compactness <- function(geo_column) {
+  dist_area <- st_area(geo_column)
+  ch_area <- st_area(st_convex_hull(geo_column))
+  
+  ch_ratio <- as.numeric(dist_area / ch_area)
+  
+  return(ch_ratio)
+}
+```
+
+This `ch_compactness` function is then applied to all the districts using the `map_dbl` function from purrr, since we are expecting numeric values for our scores. We can see again that Hawaii, Nebraska, and South Dakota are the states with the least amount of district compactness, since their median scores are the lowest.
+
+```{r}
+#| eval: false
+
+sch_compactness <- 
+  sch_sf %>% 
+  mutate(CH_COMPACT = map_dbl(geometry, ch_compactness))
+```
+
+```{r}
+#| collapse: true
+
+sch_compactness %>% 
+  st_drop_geometry() %>% 
+  group_by(STUSPS) %>% 
+  summarize(
+    SCH_DISTRICTS = n(),
+    MED_CH_COMPACT = median(CH_COMPACT)) %>% 
+  arrange(MED_CH_COMPACT) %>% 
+  head(10)
+```
+
+## Identify district enclaves
+
+The final metric that we will explore is how many enclaves each school district has. Wikipedia has a [helpful explainer](https://en.wikipedia.org/wiki/Enclave_and_exclave#Enclave_versus_exclave) of what an enclave is, but in short we are looking for parcels of a district or whole district that are completely surrounded by another school district. This could be explained by some land being carved out of a district for a nearby district or a city district that is surrounded by its county district neighbor. Here is a quick plot showing the enclave that is Tuscaloosa City, Alabama (surrounded by Tuscaloosa County).
+
+```{r}
+#| dpi: 300
+
+ggplot() +
+  geom_sf(
+    data = sch_sf %>% filter(GEOID %in% c("0103390", "0103360")),
+    aes(fill = NAME)) +
+  scale_fill_viridis_d() +
+  labs(fill = NULL) +
+  theme_void() +
+  theme(legend.position = 'bottom')
+```
+
+To identify enclaves, we process each of the polygons to remove any holes or empty spaces within their boundaries using the `st_remove_holes` function from the nngeo package.
+
+```{r}
+#| eval: false
+
+sch_rem_holes_sf <- 
+  sch_poly_sf %>% 
+  select(
+    ENCLAVED_BY_NAME = NAME, 
+    ENCLAVED_BY_STUSPS = STUSPS
+  ) %>% 
+  st_remove_holes()
+```
+
+The next step is to join the original polygon data frame with the new 'hole-free' data frame to see which polygons fit within the boundaries of other polygons. To do this, we can use the `st_join` function from the sf package with the `st_within` join option that looks for matches where the polygon fits within the polygons of the joined data frame.
+
+```{r}
+#| collapse: true
+
+sch_within_sf <- 
+  sch_poly_sf %>%
+  st_join(
+    sch_rem_holes_sf,
+    join = st_within
+  ) %>% 
+  filter(
+    NAME != ENCLAVED_BY_NAME,
+    !is.na(ENCLAVED_BY_NAME)
+  ) %>% 
+  distinct(
+    NAME,
+    STUSPS,
+    ID,
+    .keep_all = T
+  )
+
+sch_within_sf %>% 
+  st_drop_geometry() %>% 
+  count(STUSPS, sort = T)
+```
+
+We can see that Nebraska has the most district enclaves and nearly twice as many enclaves as second place Alabama. We can also plot the enclaves to see the state-by-state variation.
+
+```{r}
+#| dpi: 300
+
+states_sf <- 
+  states(cb = TRUE, progress_bar = F) %>% 
+  filter(STUSPS %in% c(state.abb, "DC")) %>% 
+  shift_geometry()
+
+ggplot() +
+  geom_sf(
+    data = states_sf,
+    fill = "grey10") +
+  geom_sf(
+    data = sch_within_sf %>% shift_geometry(), 
+    fill = "orange",
+    color = NA) + 
+  labs(
+    title = "School District Enclaves"
+  ) +
+  theme_void()
+```
+
+We can also zoom in on Nebraska and its bordering states to see the contrast more clearly.
+
+```{r}
+#| dpi: 300
+
+states_of_interest <- c("NE", "KS", "CO", "WY", "SD", "IA", "MO")
+
+ggplot() +
+  geom_sf(
+    data = states_sf %>% 
+      filter(STUSPS %in% states_of_interest),
+    fill = "grey10") +
+  geom_sf(
+    data = sch_within_sf %>% 
+      shift_geometry() %>% 
+      filter(STUSPS %in% states_of_interest), 
+    fill = "orange",
+    color = NA) + 
+  labs(
+    title = paste0(
+      "School District Enclaves in ",
+      glue::glue_collapse(states_of_interest, sep = ", ", last = ", and ")
+    )
+  ) +
+  theme_void()
+```
+
+## Wrapping up with summary table
+
+Finally, we can identify the districts with the most enclaves and bring together the other metrics we calculated together into one table. First, we can create a new data frame that brings the enclave count, district area, enclave area, parcel count, and compactness scores together.
+
+```{r}
+sch_enclaves <- 
+  sch_within_sf %>% 
+  st_drop_geometry() %>% 
+  count(NAME, STUSPS, sort = T)
+
+sch_enclaves_area <- 
+  sch_within_sf %>% 
+  group_by(NAME, STUSPS) %>% 
+  summarize() %>% 
+  ungroup() %>% 
+  mutate(ENCLAVE_AREA = st_area(geometry)) %>% 
+  st_drop_geometry()
+
+sch_tbl_df <- 
+  sch_sf %>% 
+  inner_join(
+    sch_enclaves %>% 
+      rename(ENCLAVES = n),
+    by = c("NAME", "STUSPS")
+  ) %>% 
+  inner_join(
+    sch_compactness %>% 
+      st_drop_geometry() %>% 
+      select(
+        NAME,
+        STUSPS,
+        CH_COMPACT
+      ),
+    by = c("NAME", "STUSPS")
+  ) %>% 
+  inner_join(
+    sch_poly_count %>% 
+      rename(PARTS = n),
+    by = c("NAME", "STUSPS")
+  ) %>% 
+  inner_join(
+    sch_enclaves_area,
+    by = c("NAME", "STUSPS")
+  ) %>% 
+  mutate(TOTAL_AREA = st_area(geometry))
+```
+
+Then we can create a formatted table using the gt package and apply additional styling using the gtExtras package. This table includes the 20 districts with the most enclaves. We can embed plots of each district on the same row as other values, and we can also include bar charts to visualize the data even further.
+
+```{r}
+sch_plot <- 
+  sch_tbl_df %>% 
+  arrange(desc(ENCLAVES)) %>% 
+  head(n = 20) %>% 
+  mutate(
+    ENCLAVE_RATIO = as.numeric(ENCLAVE_AREA) / as.numeric(TOTAL_AREA),
+    TOTAL_AREA_MI = conv_unit(as.numeric(TOTAL_AREA), from = "m2", to = "mi2"),
+    PLOT = map(
+      geometry,
+      ~(ggplot(data = .x) +
+        geom_sf(fill = "purple") +
+        theme_void()) %>% 
+        ggplot_image(height = px(125))
+      )) %>% 
+  st_drop_geometry() %>% 
+  select(
+    PLOT,
+    NAME,
+    STATE_NAME,
+    TOTAL_AREA_MI,
+    ENCLAVES,
+    ENCLAVE_RATIO,
+    CH_COMPACT
+  )
+
+sch_plot %>% 
+  gt() %>% 
+  cols_label(
+    PLOT = "District Boundaries",
+    NAME = "District Name",
+    STATE_NAME = "State",
+    TOTAL_AREA_MI = "Total Area (square miles)",
+    ENCLAVES = "Number of Enclaves",
+    ENCLAVE_RATIO = "Share of Area in Enclaves",
+    CH_COMPACT = "District Compactness"
+  ) %>%
+  fmt_markdown(c(PLOT)) %>%
+  fmt_number(
+    c(ENCLAVES),
+    decimals = 0
+  ) %>% 
+  fmt_number(
+    c(TOTAL_AREA_MI),
+    decimals = 1
+  ) %>% 
+  fmt_percent(
+    c(ENCLAVE_RATIO)
+  ) %>% 
+  gt_theme_pff(
+    divider = TOTAL_AREA_MI
+  ) %>% 
+  gt_plt_bar(
+    column = CH_COMPACT,
+    target = 1,
+    width = 45,
+    palette = c("purple", "black")
+  ) %>% 
+  tab_header(
+    title = "School Districts with Most Enclaves",
+    subtitle = "Area, enclave, and compactness stats"
+  ) %>% 
+  gt_highlight_cols(columns = ENCLAVES, fill = "#e4e8ec")
+  
+```
+
+```{r}
+#| include: false
+
+# tccs_core <- 
+#   sch_poly_sf %>% 
+#   filter(ROW == 3932) %>% 
+#   st_remove_holes()
+# 
+# fps_enclave <- 
+#   sch_poly_sf %>% 
+#   filter(ROW == 2734)
+# 
+# st_within(fps_enclave, tccs_core, sparse = FALSE) %>% as.logical()
+# 
+# fps_enclave %>% st_join(tccs_core, join = st_within)
+```

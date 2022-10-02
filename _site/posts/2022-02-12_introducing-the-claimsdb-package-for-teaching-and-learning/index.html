@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2022-02-12">
+
+<title>Josh Fangmeier - Introducing the claimsdb package for teaching and learning</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<meta name="twitter:title" content="Josh Fangmeier - Introducing the claimsdb package for teaching and learning">
+<meta name="twitter:description" content="In the fields of health informatics and health services research, health insurance claims data are a valuable resource to help answer questions about health care access and financing.">
+<meta name="twitter:image" content="README-diagram.PNG">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Josh Fangmeier</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About Me</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/jfangmeier"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/joshfangmeier"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/jfangmeier/"><i class="bi bi-linkedin" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#installation-and-components-of-the-claimsdb-package" id="toc-installation-and-components-of-the-claimsdb-package" class="nav-link active" data-scroll-target="#installation-and-components-of-the-claimsdb-package">Installation and components of the <em>claimsdb</em> package</a></li>
+  <li><a href="#access-claims-data-as-a-remote-database" id="toc-access-claims-data-as-a-remote-database" class="nav-link" data-scroll-target="#access-claims-data-as-a-remote-database">Access claims data as a remote database</a></li>
+  <li><a href="#examples-of-using-claimsdb-for-analysis" id="toc-examples-of-using-claimsdb-for-analysis" class="nav-link" data-scroll-target="#examples-of-using-claimsdb-for-analysis">Examples of using <em>claimsdb</em> for analysis</a>
+  <ul class="collapse">
+  <li><a href="#first-a-note-about-working-with-datestimes-in-databases" id="toc-first-a-note-about-working-with-datestimes-in-databases" class="nav-link" data-scroll-target="#first-a-note-about-working-with-datestimes-in-databases">First, a note about working with dates/times in databases</a></li>
+  <li><a href="#example-1-which-members-had-the-highest-prescription-drug-costs-for-2008" id="toc-example-1-which-members-had-the-highest-prescription-drug-costs-for-2008" class="nav-link" data-scroll-target="#example-1-which-members-had-the-highest-prescription-drug-costs-for-2008">Example 1: <em>which members had the highest prescription drug costs for 2008?</em></a></li>
+  <li><a href="#example-2-what-percent-of-beneficiaries-received-an-office-visit-within-30-days-of-discharge-from-a-hospital" id="toc-example-2-what-percent-of-beneficiaries-received-an-office-visit-within-30-days-of-discharge-from-a-hospital" class="nav-link" data-scroll-target="#example-2-what-percent-of-beneficiaries-received-an-office-visit-within-30-days-of-discharge-from-a-hospital">Example 2: <em>what percent of beneficiaries received an office visit within 30 days of discharge from a hospital?</em></a></li>
+  <li><a href="#example-3-how-well-are-beneficiaries-filling-their-hypertension-drug-prescriptions" id="toc-example-3-how-well-are-beneficiaries-filling-their-hypertension-drug-prescriptions" class="nav-link" data-scroll-target="#example-3-how-well-are-beneficiaries-filling-their-hypertension-drug-prescriptions">Example 3: <em>how well are beneficiaries filling their hypertension drug prescriptions?</em></a></li>
+  </ul></li>
+  <li><a href="#data-limitations" id="toc-data-limitations" class="nav-link" data-scroll-target="#data-limitations">Data Limitations</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Introducing the claimsdb package for teaching and learning</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">health care</div>
+    <div class="quarto-category">claims</div>
+    <div class="quarto-category">Medicare</div>
+    <div class="quarto-category">databases</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">February 12, 2022</p>
+    </div>
+  </div>
+    
+  </div>
+  
+
+</header>
+
+<p><img src="README-diagram.PNG" class="img-fluid" style="border: 5px solid #555;" alt="Diagram of claims database tables with arrows to show data relationships"></p>
+<p>In the fields of health informatics and health services research, health insurance claims data are a valuable resource to help answer questions about health care access and financing. However, claims data in the real world often contains both sensitive (protected health information) and proprietary (trade secrets) elements. For most students and educators seeking opportunities to learn how to use claims data, there are few available sources for practice.</p>
+<p>To help with this problem, <a href="https://github.com/jfangmeier/claimsdb"><strong>claimsdb</strong></a> 📦 provides easy access to a sample of health insurance enrollment and claims data from the <a href="https://www.cms.gov/Research-Statistics-Data-and-Systems/Downloadable-Public-Use-Files/SynPUFs/DE_Syn_PUF">Centers for Medicare and Medicaid Services (CMS) Data Entrepreneurs’ Synthetic Public Use File (DE-SynPUF)</a>, as a set of relational tables or as an in-memory database using <a href="https://duckdb.org/">DuckDB</a>. All the data is contained within a single package, so users do not need to download any external data. This package is inspired by and based on the <a href="https://github.com/gadenbuie/starwarsdb">starwarsdb</a> package.</p>
+<p>The data are structured as actual Medicare claims data but are fully “synthetic,” after a process of alterations meant to reduce the risk of re-identification of real Medicare beneficiaries. The synthetic process that CMS adopted changes the co-variation across variables, so analysts should be cautious about drawing inferences about the actual Medicare population.</p>
+<p>The data included in claimsdb comes from 500 randomly selected 2008 Medicare beneficiaries from Sample 2 of the DE-SynPUF, and it includes all the associated claims for these members for 2008-2009. CMS provides <a href="https://www.cms.gov/Research-Statistics-Data-and-Systems/Downloadable-Public-Use-Files/SynPUFs/DESample02">resources</a>, including a codebook, FAQs, and other documents with more information about this data.</p>
+<p>To introduce claimsdb, this post covers the following topics: - Installation of the claimsdb package - How to setup a remote database with the included data - Examples of how to use claimsdb for analysis - An overview of the limitations of the data included in package</p>
+<section id="installation-and-components-of-the-claimsdb-package" class="level2">
+<h2 class="anchored" data-anchor-id="installation-and-components-of-the-claimsdb-package">Installation and components of the <em>claimsdb</em> package</h2>
+<p>You can install the development version of claimsdb from GitHub with:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("devtools")</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"jfangmeier/claimsdb"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You can then load claimsdb alongside your other packages. We will be using the <em>tidyverse</em> packages in our later examples.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(claimsdb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The tables are available after loading the claimsdb package. This includes a <code>schema</code> that describes each of the tables and the included variables from the <a href="https://www.cms.gov/Research-Statistics-Data-and-Systems/Downloadable-Public-Use-Files/SynPUFs/DE_Syn_PUF">CMS DE-SynPUF</a>. You can see that claimsdb includes five tables. One of the tables, <em>bene</em> contains beneficiary records, while the others include specific types of claims data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>schema</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 x 5
+  TABLE      TABLE_TITLE                                TABLE~1 UNIT_~2 PROPER~3
+  &lt;chr&gt;      &lt;chr&gt;                                      &lt;chr&gt;   &lt;chr&gt;   &lt;list&gt;  
+1 bene       CMS Beneficiary Summary DE-SynPUF          Synthe~ Benefi~ &lt;tibble&gt;
+2 carrier    CMS Carrier Claims DE-SynPUF               Synthe~ claim   &lt;tibble&gt;
+3 inpatient  CMS Inpatient Claims DE-SynPUF             Synthe~ claim   &lt;tibble&gt;
+4 outpatient CMS Outpatient Claims DE-SynPUF            Synthe~ claim   &lt;tibble&gt;
+5 pde        CMS Prescription Drug Events (PDE) DE-Syn~ Synthe~ claim   &lt;tibble&gt;
+# ... with abbreviated variable names 1: TABLE_DESCRIPTION, 2: UNIT_OF_RECORD,
+#   3: PROPERTIES</code></pre>
+</div>
+</div>
+<p>You can access details on the variables in each of the tables like in this example with the <em>inpatient</em> table. You can see that this table contains 35 fields, including a beneficiary code to identify members across tables as well as detailed information on each inpatient claim.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>schema <span class="sc">%&gt;%</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(TABLE <span class="sc">==</span> <span class="st">"inpatient"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(PROPERTIES)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+# A tibble: 35 x 3
+   VARIABLE                 TYPE    DESCRIPTION                                 
+   &lt;chr&gt;                    &lt;chr&gt;   &lt;chr&gt;                                       
+ 1 DESYNPUF_ID              string  Beneficiary Code                            
+ 2 CLM_ID                   string  Claim ID                                    
+ 3 SEGMENT                  numeric Claim Line Segment                          
+ 4 CLM_FROM_DT              date    Claims start date                           
+ 5 CLM_THRU_DT              date    Claims end date                             
+ 6 PRVDR_NUM                string  Provider Institution                        
+ 7 CLM_PMT_AMT              numeric Claim Payment Amount                        
+ 8 NCH_PRMRY_PYR_CLM_PD_AMT numeric NCH Primary Payer Claim Paid Amount         
+ 9 AT_PHYSN_NPI             string  Attending Physician National Provider Ident~
+10 OP_PHYSN_NPI             string  Operating Physician National Provider Ident~
+# ... with 25 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="access-claims-data-as-a-remote-database" class="level2">
+<h2 class="anchored" data-anchor-id="access-claims-data-as-a-remote-database">Access claims data as a remote database</h2>
+<p>Many organizations store claims data in a remote database, so claimsdb also includes all of the tables as an in-memory DuckDB database. This can be a great way to practice working with this type of data, including building queries with dplyr code using dbplyr.</p>
+<p>To setup the in-memory database, you need to create a database connection using <code>claims_connect()</code> and create connections to each of the tables you want to use.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dbplyr)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup connection to duckDB database</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>con <span class="ot">&lt;-</span> <span class="fu">claims_connect</span>()</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup connections to each of the enrollment and claims tables in the database</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>bene_rmt <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con, <span class="st">"bene"</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>inpatient_rmt <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con, <span class="st">"inpatient"</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>outpatient_rmt <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con, <span class="st">"outpatient"</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>carrier_rmt <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con, <span class="st">"carrier"</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>pde_rmt <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con, <span class="st">"pde"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You can then preview your connection to each of the remote tables.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Preview the prescription drug event table in the database</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>pde_rmt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Source:   table&lt;pde&gt; [?? x 8]
+# Database: DuckDB 0.5.1 [Josh@Windows 10 x64:R 4.1.0/:memory:]
+   DESYNPUF_ID      PDE_ID    SRVC_DT    PROD_~1 QTY_D~2 DAYS_~3 PTNT_~4 TOT_R~5
+   &lt;chr&gt;            &lt;chr&gt;     &lt;date&gt;     &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+ 1 00E040C6ECE8F878 83014463~ 2008-12-20 492880~      30      30       0      10
+ 2 00E040C6ECE8F878 83594465~ 2009-04-25 529590~      20      30       0       0
+ 3 00E040C6ECE8F878 83144465~ 2009-09-22 000834~      80      30      40      80
+ 4 00E040C6ECE8F878 83614464~ 2009-10-03 634810~      60      10       0      10
+ 5 00E040C6ECE8F878 83014461~ 2009-11-16 511294~      60      30       0      20
+ 6 00E040C6ECE8F878 83234464~ 2009-12-11 580160~     270      30       0      10
+ 7 014F2C07689C173B 83294462~ 2009-09-14 009045~      90      30       0      60
+ 8 014F2C07689C173B 83874466~ 2009-10-11 596040~      40      20       0     570
+ 9 014F2C07689C173B 83314462~ 2009-11-24 510790~      30      30       0     150
+10 014F2C07689C173B 83874467~ 2009-12-29 511293~      30      30       0      10
+# ... with more rows, and abbreviated variable names 1: PROD_SRVC_ID,
+#   2: QTY_DSPNSD_NUM, 3: DAYS_SUPLY_NUM, 4: PTNT_PAY_AMT, 5: TOT_RX_CST_AMT</code></pre>
+</div>
+</div>
+</section>
+<section id="examples-of-using-claimsdb-for-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="examples-of-using-claimsdb-for-analysis">Examples of using <em>claimsdb</em> for analysis</h2>
+<p>To analyze and explore the claims and beneficiary data, you can execute your own SQL code on the database using the <code>DBI</code> package.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>DBI<span class="sc">::</span><span class="fu">dbGetQuery</span>(</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  con, </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste0</span>(</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'SELECT "DESYNPUF_ID", "BENE_BIRTH_DT"'</span>,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'FROM "bene"'</span>,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'WHERE "BENE_SEX_IDENT_CD" = 1.0'</span>,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'LIMIT 10'</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        DESYNPUF_ID BENE_BIRTH_DT
+1  001115EAB83B19BB    1939-12-01
+2  03ADA78C0FEF79F4    1923-02-01
+3  040A12AB5EAA444C    1943-10-01
+4  0507DE00BC6E6CD6    1932-07-01
+5  05672CCCED56BCAD    1937-07-01
+6  060CDE3A044F64BA    1943-02-01
+7  061B5B3D9A459675    1932-04-01
+8  08C8E0A0C6EAC884    1954-06-01
+9  09EEB5C4C4FAEF10    1935-04-01
+10 0A58C6D6B9BE67CF    1942-07-01</code></pre>
+</div>
+</div>
+<p>However, in the following examples, we will use the <code>dbplyr</code> package which translates dplyr code into SQL that can be executed against the database. You can see that the results below with dplyr functions match the results above that used a SQL query.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>bene_rmt <span class="sc">%&gt;%</span> </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(BENE_SEX_IDENT_CD <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(DESYNPUF_ID, BENE_BIRTH_DT)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Source:   SQL [?? x 2]
+# Database: DuckDB 0.5.1 [Josh@Windows 10 x64:R 4.1.0/:memory:]
+   DESYNPUF_ID      BENE_BIRTH_DT
+   &lt;chr&gt;            &lt;date&gt;       
+ 1 001115EAB83B19BB 1939-12-01   
+ 2 03ADA78C0FEF79F4 1923-02-01   
+ 3 040A12AB5EAA444C 1943-10-01   
+ 4 0507DE00BC6E6CD6 1932-07-01   
+ 5 05672CCCED56BCAD 1937-07-01   
+ 6 060CDE3A044F64BA 1943-02-01   
+ 7 061B5B3D9A459675 1932-04-01   
+ 8 08C8E0A0C6EAC884 1954-06-01   
+ 9 09EEB5C4C4FAEF10 1935-04-01   
+10 0A58C6D6B9BE67CF 1942-07-01   
+# ... with more rows</code></pre>
+</div>
+</div>
+<p>We can use the <code>show_query()</code> function to see the SQL code that dbplyr created and that it closely matches the SQL code above.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>bene_rmt <span class="sc">%&gt;%</span> </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(BENE_SEX_IDENT_CD <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(DESYNPUF_ID, BENE_BIRTH_DT) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">show_query</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;SQL&gt;
+SELECT DESYNPUF_ID, BENE_BIRTH_DT
+FROM bene
+WHERE (BENE_SEX_IDENT_CD = 1.0)</code></pre>
+</div>
+</div>
+<section id="first-a-note-about-working-with-datestimes-in-databases" class="level3">
+<h3 class="anchored" data-anchor-id="first-a-note-about-working-with-datestimes-in-databases">First, a note about working with dates/times in databases</h3>
+<p>dbplyr is an amazing tool for working with databases, especially if you want to use many functions from the dplyr and tidyr packages. However, it does not currently have SQL translations for all functions in the tidyverse family of packages. For example, the <code>lubridate</code> package’s date and time functions work on local dataframes but cannot be translated to work on remote tables at this time. In the example below, you can see that the lubridate function <code>year()</code> (for parsing the year from a date) works on the local dataframe but generates an error on the remote table with the same data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>bene <span class="sc">%&gt;%</span> </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    DESYNPUF_ID,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    BENE_BIRTH_DT,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">BIRTH_YEAR =</span> lubridate<span class="sc">::</span><span class="fu">year</span>(BENE_BIRTH_DT)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 998 x 3
+   DESYNPUF_ID      BENE_BIRTH_DT BIRTH_YEAR
+   &lt;chr&gt;            &lt;date&gt;             &lt;dbl&gt;
+ 1 001115EAB83B19BB 1939-12-01          1939
+ 2 0018A1975BC0EE4F 1935-11-01          1935
+ 3 00E040C6ECE8F878 1932-11-01          1932
+ 4 014F2C07689C173B 1935-07-01          1935
+ 5 029A22E4A3AAEE15 1921-05-01          1921
+ 6 03410742A11DDC52 1943-07-01          1943
+ 7 03ADA78C0FEF79F4 1923-02-01          1923
+ 8 040A12AB5EAA444C 1943-10-01          1943
+ 9 043AAAE41C9A37B7 1924-03-01          1924
+10 0507DE00BC6E6CD6 1932-07-01          1932
+# ... with 988 more rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>bene_rmt <span class="sc">%&gt;%</span> </span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    DESYNPUF_ID,</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    BENE_BIRTH_DT,</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">BIRTH_YEAR =</span> lubridate<span class="sc">::</span><span class="fu">year</span>(BENE_BIRTH_DT)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Source:   SQL [?? x 3]
+# Database: DuckDB 0.5.1 [Josh@Windows 10 x64:R 4.1.0/:memory:]
+   DESYNPUF_ID      BENE_BIRTH_DT BIRTH_YEAR
+   &lt;chr&gt;            &lt;date&gt;             &lt;dbl&gt;
+ 1 001115EAB83B19BB 1939-12-01          1939
+ 2 0018A1975BC0EE4F 1935-11-01          1935
+ 3 00E040C6ECE8F878 1932-11-01          1932
+ 4 014F2C07689C173B 1935-07-01          1935
+ 5 029A22E4A3AAEE15 1921-05-01          1921
+ 6 03410742A11DDC52 1943-07-01          1943
+ 7 03ADA78C0FEF79F4 1923-02-01          1923
+ 8 040A12AB5EAA444C 1943-10-01          1943
+ 9 043AAAE41C9A37B7 1924-03-01          1924
+10 0507DE00BC6E6CD6 1932-07-01          1932
+# ... with more rows</code></pre>
+</div>
+</div>
+<p>Fortunately, dbplyr allows you pass along SQL functions in your dplyr code, and it will include these functions in the generated query. For date/time functions, we need to consult the <a href="https://duckdb.org/docs/sql/functions/date">documentation</a> from DuckDB on date functions. To parse a part of a date (e.g., the year), we need to use the <code>date_part()</code> function for DuckDB.</p>
+<p>The function to do this task may vary across database backends, so if you are doing this with a different database (Oracle, SQL Server, etc.), you will need to read the documentation for that database management system.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>bene_rmt <span class="sc">%&gt;%</span> </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    DESYNPUF_ID,</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    BENE_BIRTH_DT,</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">BIRTH_YEAR =</span> <span class="fu">date_part</span>(<span class="st">'year'</span>, BENE_BIRTH_DT)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Source:   SQL [?? x 3]
+# Database: DuckDB 0.5.1 [Josh@Windows 10 x64:R 4.1.0/:memory:]
+   DESYNPUF_ID      BENE_BIRTH_DT BIRTH_YEAR
+   &lt;chr&gt;            &lt;date&gt;             &lt;dbl&gt;
+ 1 001115EAB83B19BB 1939-12-01          1939
+ 2 0018A1975BC0EE4F 1935-11-01          1935
+ 3 00E040C6ECE8F878 1932-11-01          1932
+ 4 014F2C07689C173B 1935-07-01          1935
+ 5 029A22E4A3AAEE15 1921-05-01          1921
+ 6 03410742A11DDC52 1943-07-01          1943
+ 7 03ADA78C0FEF79F4 1923-02-01          1923
+ 8 040A12AB5EAA444C 1943-10-01          1943
+ 9 043AAAE41C9A37B7 1924-03-01          1924
+10 0507DE00BC6E6CD6 1932-07-01          1932
+# ... with more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="example-1-which-members-had-the-highest-prescription-drug-costs-for-2008" class="level3">
+<h3 class="anchored" data-anchor-id="example-1-which-members-had-the-highest-prescription-drug-costs-for-2008">Example 1: <em>which members had the highest prescription drug costs for 2008?</em></h3>
+<p>For this first example, we are going to identify the beneficiaries with the highest total prescription drug costs in 2008. We need to use the <em>pde</em> table that has claims on prescription drug events and the <em>bene</em> table that has beneficiary records. We create an object that is the aggregated costs for prescription drugs at the beneficiary level in 2008. Note that we had to use <code>date_part()</code> to parse the year from the service date.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate rx costs for utilizing members in 2008</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>rx_costs_rmt <span class="ot">&lt;-</span> pde_rmt <span class="sc">%&gt;%</span> </span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">BENE_YEAR =</span> <span class="fu">date_part</span>(<span class="st">'year'</span>, SRVC_DT)) <span class="sc">%&gt;%</span> </span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(BENE_YEAR <span class="sc">==</span> <span class="dv">2008</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(BENE_YEAR, DESYNPUF_ID) <span class="sc">%&gt;%</span> </span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">TOTAL_RX_COST =</span> <span class="fu">sum</span>(TOT_RX_CST_AMT, <span class="at">na.rm =</span> T), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>rx_costs_rmt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Source:   SQL [?? x 3]
+# Database: DuckDB 0.5.1 [Josh@Windows 10 x64:R 4.1.0/:memory:]
+   BENE_YEAR DESYNPUF_ID      TOTAL_RX_COST
+       &lt;dbl&gt; &lt;chr&gt;                    &lt;dbl&gt;
+ 1      2008 00E040C6ECE8F878            10
+ 2      2008 03ADA78C0FEF79F4          5020
+ 3      2008 040A12AB5EAA444C           120
+ 4      2008 043AAAE41C9A37B7           810
+ 5      2008 05672CCCED56BCAD             0
+ 6      2008 061B5B3D9A459675           270
+ 7      2008 08BB74BA9DFD5C06            20
+ 8      2008 08C8E0A0C6EAC884          5860
+ 9      2008 09EEB5C4C4FAEF10          1590
+10      2008 0A58C6D6B9BE67CF           930
+# ... with more rows</code></pre>
+</div>
+</div>
+<p>Then we join the aggregated cost data to the beneficiary table. This is necessary because the <em>pde</em> table does not include beneficiaries who didn’t use any prescription drugs. After joining the table we reassign missing cost data to zero for those beneficiaries with no utilization. We can then use <code>collect()</code> to retrieve the results as a local dataframe.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Join the rx costs data to the beneficiary file and include members with no costs</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>rx_bene_rmt <span class="ot">&lt;-</span> bene_rmt <span class="sc">%&gt;%</span> </span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(BENE_YEAR <span class="sc">==</span> <span class="dv">2008</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    BENE_YEAR,</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    DESYNPUF_ID</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    rx_costs_rmt, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"BENE_YEAR"</span>, <span class="st">"DESYNPUF_ID"</span>)</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">TOTAL_RX_COST =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(TOTAL_RX_COST), <span class="dv">0</span>, TOTAL_RX_COST)) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(TOTAL_RX_COST))</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>rx_bene_rmt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Source:     SQL [?? x 3]
+# Database:   DuckDB 0.5.1 [Josh@Windows 10 x64:R 4.1.0/:memory:]
+# Ordered by: desc(TOTAL_RX_COST)
+   BENE_YEAR DESYNPUF_ID      TOTAL_RX_COST
+       &lt;dbl&gt; &lt;chr&gt;                    &lt;dbl&gt;
+ 1      2008 484FAAB99C7F90F2         10410
+ 2      2008 1187122DCAD04B48          9300
+ 3      2008 5199E41C3B2B36AD          9110
+ 4      2008 801D1702FC0C105F          8210
+ 5      2008 92158DA24D7A8799          7910
+ 6      2008 A705B8508EB5747D          7380
+ 7      2008 A9142A5D9895479C          6780
+ 8      2008 D20C21DD9F8177D0          6590
+ 9      2008 08C8E0A0C6EAC884          5860
+10      2008 EBE9CC1D92AA56C0          5690
+# ... with more rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># You can use collect() to bring the results into a local dataframe</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>rx_bene_df <span class="ot">&lt;-</span> rx_bene_rmt <span class="sc">%&gt;%</span> </span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>rx_bene_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 500 x 3
+   BENE_YEAR DESYNPUF_ID      TOTAL_RX_COST
+       &lt;dbl&gt; &lt;chr&gt;                    &lt;dbl&gt;
+ 1      2008 484FAAB99C7F90F2         10410
+ 2      2008 1187122DCAD04B48          9300
+ 3      2008 5199E41C3B2B36AD          9110
+ 4      2008 801D1702FC0C105F          8210
+ 5      2008 92158DA24D7A8799          7910
+ 6      2008 A705B8508EB5747D          7380
+ 7      2008 A9142A5D9895479C          6780
+ 8      2008 D20C21DD9F8177D0          6590
+ 9      2008 08C8E0A0C6EAC884          5860
+10      2008 EBE9CC1D92AA56C0          5690
+# ... with 490 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="example-2-what-percent-of-beneficiaries-received-an-office-visit-within-30-days-of-discharge-from-a-hospital" class="level3">
+<h3 class="anchored" data-anchor-id="example-2-what-percent-of-beneficiaries-received-an-office-visit-within-30-days-of-discharge-from-a-hospital">Example 2: <em>what percent of beneficiaries received an office visit within 30 days of discharge from a hospital?</em></h3>
+<p>In the next example, we are identifying which beneficiaries had an office visit within 30 days of being discharged. We will start with the <em>inpatient</em> table that contains records for all inpatient stays, including when a beneficiary was discharged. We create an object that includes the beneficiary ID, the discharge date, and the date 30 days after discharge. Note that for DuckDB we need to coerce “30” to an integer to calculate the new date.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Identify all member discharge dates and the dates 30 days after discharge from the inpatient table</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>ip_discharges <span class="ot">&lt;-</span> inpatient_rmt <span class="sc">%&gt;%</span> </span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    DESYNPUF_ID, </span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">DSCHRG_DT =</span> NCH_BENE_DSCHRG_DT,</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">DSCHRG_DT_30 =</span> NCH_BENE_DSCHRG_DT <span class="sc">+</span> <span class="fu">as.integer</span>(<span class="dv">30</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>()</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>ip_discharges</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Source:   SQL [?? x 3]
+# Database: DuckDB 0.5.1 [Josh@Windows 10 x64:R 4.1.0/:memory:]
+   DESYNPUF_ID      DSCHRG_DT  DSCHRG_DT_30
+   &lt;chr&gt;            &lt;date&gt;     &lt;date&gt;      
+ 1 014F2C07689C173B 2009-09-20 2009-10-20  
+ 2 029A22E4A3AAEE15 2008-01-25 2008-02-24  
+ 3 060CDE3A044F64BA 2008-10-18 2008-11-17  
+ 4 08BB74BA9DFD5C06 2009-03-07 2009-04-06  
+ 5 08BB74BA9DFD5C06 2009-03-08 2009-04-07  
+ 6 08C8E0A0C6EAC884 2008-02-22 2008-03-23  
+ 7 08C8E0A0C6EAC884 2009-05-28 2009-06-27  
+ 8 08C8E0A0C6EAC884 2009-06-14 2009-07-14  
+ 9 08C8E0A0C6EAC884 2009-07-07 2009-08-06  
+10 08C8E0A0C6EAC884 2009-08-23 2009-09-22  
+# ... with more rows</code></pre>
+</div>
+</div>
+<p>Next, we need to identify office visits from the <em>carrier</em> table. I created a vector of five office visit codes for this example. Since these codes must match the values in the “HCPCS” columns, we reshape the table with <code>pivot_longer()</code> then filter for the office visit codes.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create vector of office visit codes</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>off_vis_cds <span class="ot">&lt;-</span> <span class="fu">as.character</span>(<span class="dv">99211</span><span class="sc">:</span><span class="dv">99215</span>)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Identify members who had an office visit from the carrier table</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>off_visit <span class="ot">&lt;-</span> carrier_rmt <span class="sc">%&gt;%</span> </span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(DESYNPUF_ID, CLM_ID, CLM_FROM_DT, <span class="fu">matches</span>(<span class="st">"HCPCS"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">matches</span>(<span class="st">"HCPCS"</span>), <span class="at">names_to =</span> <span class="st">"LINE"</span>, <span class="at">values_to =</span> <span class="st">"HCPCS"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(HCPCS <span class="sc">%in%</span> off_vis_cds) <span class="sc">%&gt;%</span> </span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(DESYNPUF_ID, CLM_FROM_DT) <span class="sc">%&gt;%</span> </span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">OFFICE_VISIT =</span> <span class="dv">1</span>)</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>off_visit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Source:   SQL [?? x 3]
+# Database: DuckDB 0.5.1 [Josh@Windows 10 x64:R 4.1.0/:memory:]
+   DESYNPUF_ID      CLM_FROM_DT OFFICE_VISIT
+   &lt;chr&gt;            &lt;date&gt;             &lt;dbl&gt;
+ 1 00E040C6ECE8F878 2009-01-17             1
+ 2 00E040C6ECE8F878 2009-07-20             1
+ 3 00E040C6ECE8F878 2009-07-26             1
+ 4 029A22E4A3AAEE15 2008-01-25             1
+ 5 029A22E4A3AAEE15 2008-01-30             1
+ 6 029A22E4A3AAEE15 2008-08-28             1
+ 7 029A22E4A3AAEE15 2008-11-19             1
+ 8 029A22E4A3AAEE15 2009-04-01             1
+ 9 029A22E4A3AAEE15 2009-04-12             1
+10 029A22E4A3AAEE15 2009-05-13             1
+# ... with more rows</code></pre>
+</div>
+</div>
+<p>Finally, we join the office visits object to the discharges object. We can use the <code>sql_on</code> option in <code>left_join()</code> to inject some custom SQL to join when the office visit date is within 30 days of the discharge date.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Join discharges data and office visit data</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>discharge_offvis <span class="ot">&lt;-</span> </span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  ip_discharges <span class="sc">%&gt;%</span> </span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>    off_visit,</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">sql_on =</span> <span class="fu">paste0</span>(</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>      <span class="st">"(LHS.DESYNPUF_ID = RHS.DESYNPUF_ID) AND"</span>,</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>      <span class="st">"(RHS.CLM_FROM_DT &gt;= LHS.DSCHRG_DT) AND"</span>,</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>      <span class="st">"(RHS.CLM_FROM_DT &lt;= LHS.DSCHRG_DT_30)"</span></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>discharge_offvis</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Source:   SQL [?? x 6]
+# Database: DuckDB 0.5.1 [Josh@Windows 10 x64:R 4.1.0/:memory:]
+   DESYNPUF_ID.x    DSCHRG_DT  DSCHRG_DT_30 DESYNPUF_ID.y    CLM_FROM_DT OFFIC~1
+   &lt;chr&gt;            &lt;date&gt;     &lt;date&gt;       &lt;chr&gt;            &lt;date&gt;        &lt;dbl&gt;
+ 1 029A22E4A3AAEE15 2008-01-25 2008-02-24   029A22E4A3AAEE15 2008-01-25        1
+ 2 029A22E4A3AAEE15 2008-01-25 2008-02-24   029A22E4A3AAEE15 2008-01-30        1
+ 3 060CDE3A044F64BA 2008-10-18 2008-11-17   060CDE3A044F64BA 2008-11-01        1
+ 4 1187122DCAD04B48 2009-04-06 2009-05-06   1187122DCAD04B48 2009-04-07        1
+ 5 1187122DCAD04B48 2009-04-06 2009-05-06   1187122DCAD04B48 2009-04-27        1
+ 6 1187122DCAD04B48 2009-04-06 2009-05-06   1187122DCAD04B48 2009-05-04        1
+ 7 12D6FF0C18764D0D 2009-05-08 2009-06-07   12D6FF0C18764D0D 2009-05-19        1
+ 8 12D6FF0C18764D0D 2009-05-08 2009-06-07   12D6FF0C18764D0D 2009-05-24        1
+ 9 144C187653FBBE83 2008-06-08 2008-07-08   144C187653FBBE83 2008-06-22        1
+10 144C187653FBBE83 2008-06-08 2008-07-08   144C187653FBBE83 2008-07-04        1
+# ... with more rows, and abbreviated variable name 1: OFFICE_VISIT</code></pre>
+</div>
+</div>
+<p>After the join is complete, we can calculate the share of discharges with a timely office visit.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Find the percent of members with a office visit within 30 days of discharge</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>discharge_offvis <span class="sc">%&gt;%</span> </span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    DESYNPUF_ID.x,</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>    DSCHRG_DT,</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>    OFFICE_VISIT</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">OFFICE_VISIT =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(OFFICE_VISIT), <span class="dv">0</span>, OFFICE_VISIT)) <span class="sc">%&gt;%</span> </span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">OFV_RATE =</span> <span class="fu">mean</span>(OFFICE_VISIT, <span class="at">na.rm =</span> T)</span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Source:   SQL [1 x 1]
+# Database: DuckDB 0.5.1 [Josh@Windows 10 x64:R 4.1.0/:memory:]
+  OFV_RATE
+     &lt;dbl&gt;
+1    0.540</code></pre>
+</div>
+</div>
+</section>
+<section id="example-3-how-well-are-beneficiaries-filling-their-hypertension-drug-prescriptions" class="level3">
+<h3 class="anchored" data-anchor-id="example-3-how-well-are-beneficiaries-filling-their-hypertension-drug-prescriptions">Example 3: <em>how well are beneficiaries filling their hypertension drug prescriptions?</em></h3>
+<p>For this final example, we need to identify hypertension medications from the <em>pde</em> table and calculate medication adherence rates for each beneficiary. To isolate the hypertension medications, we can borrow from the HEDIS medication list for ACE inhibitors and ARB medications (which are commonly used to treat hypertension). This medication list is for 2018/2019, so it likely includes new drugs that did not exist in 2008/2009 and may not include older drugs that are no longer used (ideally it’s best to use external lists that match the time frame of the claims data).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>hedis_wb <span class="ot">&lt;-</span> <span class="fu">tempfile</span>()</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">url =</span> <span class="st">"https://www.ncqa.org/hedis-2019-ndc-mld-directory-complete-workbook-final-11-1-2018-3/"</span>,</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">destfile =</span> hedis_wb,</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">mode =</span> <span class="st">"wb"</span></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>hedis_df <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_excel</span>(</span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">path =</span> hedis_wb,</span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">sheet =</span> <span class="st">"Medications List to NDC Codes"</span></span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>hyp_ndc_df <span class="ot">&lt;-</span> </span>
+<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>  hedis_df <span class="sc">%&gt;%</span> </span>
+<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">Medication List</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"ACE Inhibitor/ARB Medications"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">LIST =</span> <span class="st">`</span><span class="at">Medication List</span><span class="st">`</span>,</span>
+<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">PRODUCTID =</span> <span class="st">`</span><span class="at">NDC Code</span><span class="st">`</span></span>
+<span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb36-21"><a href="#cb36-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-22"><a href="#cb36-22" aria-hidden="true" tabindex="-1"></a>hyp_ndc_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3,230 x 2
+   LIST                          PRODUCTID  
+   &lt;chr&gt;                         &lt;chr&gt;      
+ 1 ACE Inhibitor/ARB Medications 00093512501
+ 2 ACE Inhibitor/ARB Medications 00093512505
+ 3 ACE Inhibitor/ARB Medications 00185005301
+ 4 ACE Inhibitor/ARB Medications 00185005305
+ 5 ACE Inhibitor/ARB Medications 00247213730
+ 6 ACE Inhibitor/ARB Medications 00378044301
+ 7 ACE Inhibitor/ARB Medications 00781189201
+ 8 ACE Inhibitor/ARB Medications 13811062810
+ 9 ACE Inhibitor/ARB Medications 13811062850
+10 ACE Inhibitor/ARB Medications 21695032630
+# ... with 3,220 more rows</code></pre>
+</div>
+</div>
+<p>One of the cool features of dbplyr is that we can copy this local dataframe to the database as a temporary table using the <code>copy_to()</code> function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>hyp_ndc_rmt <span class="ot">&lt;-</span> <span class="fu">copy_to</span>(con, hyp_ndc_df, <span class="at">overwrite =</span> T)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>hyp_ndc_rmt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Source:   table&lt;hyp_ndc_df&gt; [?? x 2]
+# Database: DuckDB 0.5.1 [Josh@Windows 10 x64:R 4.1.0/:memory:]
+   LIST                          PRODUCTID  
+   &lt;chr&gt;                         &lt;chr&gt;      
+ 1 ACE Inhibitor/ARB Medications 00093512501
+ 2 ACE Inhibitor/ARB Medications 00093512505
+ 3 ACE Inhibitor/ARB Medications 00185005301
+ 4 ACE Inhibitor/ARB Medications 00185005305
+ 5 ACE Inhibitor/ARB Medications 00247213730
+ 6 ACE Inhibitor/ARB Medications 00378044301
+ 7 ACE Inhibitor/ARB Medications 00781189201
+ 8 ACE Inhibitor/ARB Medications 13811062810
+ 9 ACE Inhibitor/ARB Medications 13811062850
+10 ACE Inhibitor/ARB Medications 21695032630
+# ... with more rows</code></pre>
+</div>
+</div>
+<p>With the hypertension codes in the database, we can use <code>inner_join()</code> to find the matching drugs from the <em>pde</em> table.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>pde_hyp_rmt <span class="ot">&lt;-</span> </span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  pde_rmt <span class="sc">%&gt;%</span> </span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>    hyp_ndc_rmt, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"PROD_SRVC_ID"</span> <span class="ot">=</span> <span class="st">"PRODUCTID"</span>)</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>pde_hyp_rmt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Source:   SQL [?? x 9]
+# Database: DuckDB 0.5.1 [Josh@Windows 10 x64:R 4.1.0/:memory:]
+   DESYNPUF_ID   PDE_ID SRVC_DT    PROD_~1 QTY_D~2 DAYS_~3 PTNT_~4 TOT_R~5 LIST 
+   &lt;chr&gt;         &lt;chr&gt;  &lt;date&gt;     &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;
+ 1 03ADA78C0FEF~ 83554~ 2008-02-01 510790~      30      30       0      10 ACE ~
+ 2 040A12AB5EAA~ 83974~ 2009-11-27 638740~      90      30       0      10 ACE ~
+ 3 043AAAE41C9A~ 83024~ 2008-08-11 002472~     200      90      10      80 ACE ~
+ 4 0D540BEBC45A~ 83454~ 2009-02-18 604290~      60      90      10      10 ACE ~
+ 5 0D540BEBC45A~ 83874~ 2009-06-15 661050~      30      30       0      10 ACE ~
+ 6 0E0A0107787B~ 83714~ 2008-06-30 661050~     100      90      70      60 ACE ~
+ 7 109D67D11477~ 83064~ 2008-11-21 134110~      30      60       0      70 ACE ~
+ 8 109D67D11477~ 83034~ 2009-07-03 666850~      30      30       0      10 ACE ~
+ 9 10D75CDD5B4A~ 83804~ 2008-07-01 002472~      90      90       0      10 ACE ~
+10 1183CA4884F8~ 83934~ 2009-01-25 001850~      90      20       0     110 ACE ~
+# ... with more rows, and abbreviated variable names 1: PROD_SRVC_ID,
+#   2: QTY_DSPNSD_NUM, 3: DAYS_SUPLY_NUM, 4: PTNT_PAY_AMT, 5: TOT_RX_CST_AMT</code></pre>
+</div>
+</div>
+<p>We can now use <code>collect()</code> to retrieve the data as a local dataframe. As a dataframe, we can now use the <code>AdhereR</code> package to calculate the <em>medication possession ratio (MPR)</em> for members who filled a hypertension medication. MPR is a commonly used metric of medication adherence, measuring if beneficiaries have gaps between their prescription fills.</p>
+<p>We can see the MPR for each member who filled one of the medications, and we can calculate the median and mean MPRs across these beneficiaries.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("AdhereR")</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AdhereR)</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>pde_hyp_df <span class="ot">&lt;-</span> pde_hyp_rmt <span class="sc">%&gt;%</span> </span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>hyp_adhere <span class="ot">&lt;-</span> <span class="fu">CMA4</span>(</span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> pde_hyp_df,</span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">ID.colname =</span> <span class="st">'DESYNPUF_ID'</span>,</span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">event.date.colname =</span> <span class="st">'SRVC_DT'</span>,</span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">event.duration.colname =</span> <span class="st">'DAYS_SUPLY_NUM'</span>,</span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">date.format =</span> <span class="st">"%Y-%m-%d"</span></span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a>hyp_adhere_cma <span class="ot">&lt;-</span> hyp_adhere<span class="sc">$</span>CMA <span class="sc">%&gt;%</span> <span class="fu">tibble</span>()</span>
+<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a>hyp_adhere_cma</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 134 x 2
+   DESYNPUF_ID         CMA
+   &lt;chr&gt;             &lt;dbl&gt;
+ 1 03ADA78C0FEF79F4 0.0411
+ 2 040A12AB5EAA444C 0.0411
+ 3 043AAAE41C9A37B7 0.123 
+ 4 0D540BEBC45ADCA7 0.164 
+ 5 0E0A0107787B32AA 0.123 
+ 6 109D67D114778917 0.123 
+ 7 10D75CDD5B4AD3B0 0.123 
+ 8 1183CA4884F8A0A8 0.0274
+ 9 11C45CF0DDD03ACE 0.0822
+10 1226AD9944384B64 0.0411
+# ... with 124 more rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>hyp_adhere_cma <span class="sc">%&gt;%</span> </span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">median_mpr =</span> <span class="fu">median</span>(CMA),</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_mpr =</span> <span class="fu">mean</span>(CMA)</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 x 2
+  median_mpr mean_mpr
+       &lt;dbl&gt;    &lt;dbl&gt;
+1     0.0411   0.0848</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="data-limitations" class="level2">
+<h2 class="anchored" data-anchor-id="data-limitations">Data Limitations</h2>
+<p>While data included in claimsdb is useful for many types of analyses, it does include a few notable limitations. - As mentioned earlier, the data is a small sample (500 beneficiaries) and is not intended to be representative of the Medicare population. In addition, the data is synthetic and should not be used for drawing inferences on the Medicare population. - Since the data is more than 10 years old, it doesn’t capture newer medications or procedures. It also includes procedure codes that have been retired or replaced. This is a challenge when applying external code lists that are much newer. - The diagnosis fields in the data use the International Classification of Diseases, Ninth Revision (ICD-9), but the United States converted to ICD-10 in 2015. If you are interesting in a mapping between ICD-9 and ICD-10, CMS has <a href="https://www.cms.gov/Medicare/Coding/ICD10/Archive-ICD-10-CM-ICD-10-PCS-GEMs">resources</a> to consider. - The Medicare population is mostly Americans aged 65 and over, so the data will not have claims on certain specialties such as pediatrics or maternity care.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2019-04-14">
+
+<title>Josh Fangmeier - FiveThirtyEight Riddler Challenge: ‘’Transitive Champions’’</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<meta name="twitter:title" content="Josh Fangmeier - FiveThirtyEight Riddler Challenge: ‘’Transitive Champions’’">
+<meta name="twitter:description" content="This weekend, I attempted to solve my first FiveThirtyEight Riddler challenge.">
+<meta name="twitter:image" content="https://www2.baylor.edu/wp-content/uploads/2019/04/wbb-natlchamps-apr19-768x384.jpg">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Josh Fangmeier</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About Me</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/jfangmeier"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/joshfangmeier"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/jfangmeier/"><i class="bi bi-linkedin" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#the-challenge" id="toc-the-challenge" class="nav-link active" data-scroll-target="#the-challenge">The Challenge</a></li>
+  <li><a href="#scraping-the-game-results-data" id="toc-scraping-the-game-results-data" class="nav-link" data-scroll-target="#scraping-the-game-results-data">Scraping the game results data</a></li>
+  <li><a href="#calculating-the-number-of-transitive-champions" id="toc-calculating-the-number-of-transitive-champions" class="nav-link" data-scroll-target="#calculating-the-number-of-transitive-champions">Calculating the number of transitive champions</a></li>
+  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results!</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">FiveThirtyEight Riddler Challenge: ‘’Transitive Champions’’</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">fivethirtyeight riddler</div>
+    <div class="quarto-category">basketball</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">April 14, 2019</p>
+    </div>
+  </div>
+    
+  </div>
+  
+
+</header>
+
+<section id="the-challenge" class="level2">
+<h2 class="anchored" data-anchor-id="the-challenge">The Challenge</h2>
+<p>This weekend, I attempted to solve my first FiveThirtyEight Riddler challenge. Many of these challenges require a bit more probability theory than I’m comfortable with, but <a href="https://fivethirtyeight.com/features/how-many-times-a-day-is-a-broken-clock-right/">this week’s classic challenge</a> hit a subject that I care too much about: college basketball national champions and the bragging rights that come from beating the champ:</p>
+<blockquote class="blockquote">
+<p>On Sunday, the Baylor Lady Bears won the 2019 NCAA women’s basketball championship, and on Monday, the Virginia Cavaliers did the same on the men’s side. But what about all of the unsung transitive champions? For example, earlier in the season, Florida State beat Virginia, thereby laying claim to a transitive championship for the Seminoles. And Boston College beat Florida State, claiming one for the Eagles. And IUPUI beat Boston College, and Ball State beat IUPUI, and so on and so on. Baylor, meanwhile, only lost once, to Stanford, who lost to five teams, and so on. How many transitive national champions were there this season in the women’s and men’s games? Or, maybe more descriptively, how many teams weren’t transitive national champions? You should include tournament losses in your calculations.</p>
+</blockquote>
+<p>The author (Oliver Roeder) then supplies links to the results of women’s and men’s basketball for the 2018-2019 season from <a href="https://www.masseyratings.com">masseyratings.com</a>. On first inspection of the game results, they seem to be in a text format that could be scrapped. In addition, I noticed that the <a href="https://www.masseyratings.com/scores.php?s=305973&amp;sub=305973&amp;all=1">women’s link</a> includes 27,266 games, while the <a href="https://www.masseyratings.com/scores.php?s=305972&amp;sub=11590&amp;all=1">men’s link</a> contains only 6,048. The women’s results page includes several junior colleges and even my alma mater <a href="https://twitter.com/hcbroncowbb?lang=en">Hastings College</a>, who I know compete at the NAIA level, not NCAA Division I. The men’s results page includes only Division I teams, and since the challenge only mentions Baylor and Virginia, I’m assuming we want to compare Division I transitive champions. I used <a href="https://www.masseyratings.com/scores.php?s=305973&amp;sub=11590&amp;all=1">another link</a> to pull the women’s results for 5,638 Division I games.</p>
+</section>
+<section id="scraping-the-game-results-data" class="level2">
+<h2 class="anchored" data-anchor-id="scraping-the-game-results-data">Scraping the game results data</h2>
+<p>I decided to tackle this challenge using the <code>tidyverse</code> family of R packages that can scrap the data and wrangle it into a tidy format for further analysis.</p>
+<p>One major challenge is that I wrote a function to parse the college names and scores from the Massey Rating text. This involves some very gnarly regular expression writing as you can see.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>bb_games_process <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_html</span>(x) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_node</span>(<span class="at">xpath =</span> <span class="st">'/html/body/pre/text()[1]'</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_text</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">enframe</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">separate_rows</span>(value, <span class="at">sep =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">value =</span> <span class="fu">str_squish</span>(value),</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">game =</span> <span class="fu">substring</span>(value, <span class="dv">12</span>),</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">date =</span> <span class="fu">ymd</span>(<span class="fu">substr</span>(value,<span class="dv">1</span>,<span class="dv">10</span>)),</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">win_team =</span> <span class="fu">str_extract</span>(game, <span class="st">"^[</span><span class="sc">\\</span><span class="st">@]{0,1}[:alpha:]{1,}[:blank:]{0,1}[:punct:]{0,1}[:blank:]{0,1}[:alpha:]{0,1}[:blank:]{0,1}[:alpha:]{1,}[:punct:]{0,1}[:alpha:]{0,1}[:blank:]{0,1}[:alpha:]{1,}[:punct:]{0,1}[:alpha:]{0,1}"</span>),</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>           <span class="at">win_pts =</span> <span class="fu">as.integer</span>(<span class="fu">str_extract</span>(game, <span class="st">"(?&lt;=[:alpha:]{1,100}[:blank:]{1})[:digit:]{1,3}"</span>)),</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>           <span class="at">lose_team =</span> <span class="fu">str_extract</span>(game, <span class="st">"(?&lt;=[:digit:]{1,3}[:blank:]{1})[</span><span class="sc">\\</span><span class="st">@]{0,1}[:alpha:]{1,}[:blank:]{0,1}[:punct:]{0,1}[:blank:]{0,1}[:alpha:]{0,1}[:blank:]{0,1}[:alpha:]{1,}[:punct:]{0,1}[:alpha:]{0,1}[:blank:]{0,1}[:alpha:]{1,}[:punct:]{0,1}[:alpha:]{0,1}"</span>),</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>           <span class="at">lose_pts =</span> <span class="fu">as.integer</span>(<span class="fu">str_extract</span>(game, <span class="st">"(?&lt;=[:digit:]{1,3}[:blank:]{1}[</span><span class="sc">\\</span><span class="st">@]{0,1}[:alpha:]{1,100}[:blank:]{0,1}[:punct:]{0,1}[:blank:]{0,1}[:alpha:]{0,1}[:blank:]{0,1}[:alpha:]{1,100}[:punct:]{0,1}[:alpha:]{0,1}[:blank:]{0,1}[:alpha:]{1,100}[:punct:]{0,1}[:alpha:]{0,1}[:blank:]{1})[:digit:]{1,3}"</span>))) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span>name, <span class="sc">-</span>value) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(date)) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">home_team =</span> <span class="fu">if_else</span>(<span class="fu">str_detect</span>(win_team, <span class="st">"</span><span class="sc">\\</span><span class="st">@"</span>), win_team, </span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>                               <span class="fu">if_else</span>(<span class="fu">str_detect</span>(lose_team, <span class="st">"</span><span class="sc">\\</span><span class="st">@"</span>), lose_team, <span class="st">"Neutral Court"</span>))) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate_at</span>(<span class="fu">vars</span>(<span class="fu">contains</span>(<span class="st">'team'</span>)), <span class="fu">list</span>(<span class="sc">~</span><span class="fu">str_remove</span>(., <span class="st">"</span><span class="sc">\\</span><span class="st">@"</span>))) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cbind</span>(x)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co">#wbb_url &lt;- "https://www.masseyratings.com/scores.php?s=305973&amp;sub=305973&amp;all=1" #Original URL (All WBB games)</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>wbb_url <span class="ot">&lt;-</span> <span class="st">"https://www.masseyratings.com/scores.php?s=305973&amp;sub=11590&amp;all=1"</span> <span class="co">#Corrected URL (only D1 WBB games)</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>mbb_url <span class="ot">&lt;-</span> <span class="st">"https://www.masseyratings.com/scores.php?s=cb2019&amp;sub=ncaa-d1&amp;all=1&amp;sch=1"</span> <span class="co">#Original URL (only D1 MBB games)</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>urls <span class="ot">&lt;-</span> <span class="fu">c</span>(wbb_url, mbb_url)</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>bb_games <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(urls, bb_games_process) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sport =</span> <span class="fu">if_else</span>(x <span class="sc">==</span> wbb_url, <span class="st">"WBB"</span>, <span class="st">"MBB"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>x)</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>bb_games <span class="sc">%&gt;%</span> <span class="fu">tail</span>(<span class="at">n=</span><span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 x 8
+  game                  date       win_t~1 win_pts lose_~2 lose_~3 home_~4 sport
+  &lt;chr&gt;                 &lt;date&gt;     &lt;chr&gt;     &lt;int&gt; &lt;chr&gt;     &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;
+1 Texas 81 Lipscomb 66~ 2019-04-04 Texas        81 Lipsco~      66 Neutra~ MBB  
+2 South Florida 77 @De~ 2019-04-05 South ~      77 DePaul       65 DePaul  MBB  
+3 Virginia 63 Auburn 6~ 2019-04-06 Virgin~      63 Auburn       62 Neutra~ MBB  
+4 Texas Tech 61 Michig~ 2019-04-06 Texas ~      61 Michig~      51 Neutra~ MBB  
+5 Virginia 85 Texas Te~ 2019-04-08 Virgin~      85 Texas ~      77 Neutra~ MBB  
+# ... with abbreviated variable names 1: win_team, 2: lose_team, 3: lose_pts,
+#   4: home_team</code></pre>
+</div>
+</div>
+<p>Using this prepped data, we can identify that there were 543 teams that played in women’s games and 650 that played in men’s games during the last season.</p>
+</section>
+<section id="calculating-the-number-of-transitive-champions" class="level2">
+<h2 class="anchored" data-anchor-id="calculating-the-number-of-transitive-champions">Calculating the number of transitive champions</h2>
+<p>To identify each “transitive champion” in each sport, I looked for where the nation champion lost and pulled a vector of the opponent(s) who beat the champion during the season. I then looped (ugh, I know, I know) through multiple rounds to see who defeated those teams, and so on and so forth. With each loop, I also pasted the number of unique transitive champions who were identified in each round into a data frame for further analysis.</p>
+<section id="setup" class="level4">
+<h4 class="anchored" data-anchor-id="setup">Setup</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>rounds <span class="ot">&lt;-</span> <span class="dv">25</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>wbb_n_champ <span class="ot">&lt;-</span> <span class="st">"Baylor"</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>mbb_n_champ <span class="ot">&lt;-</span> <span class="st">"Virginia"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="wbb-calculations" class="level4">
+<h4 class="anchored" data-anchor-id="wbb-calculations">WBB calculations</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>wbb_t_champs <span class="ot">&lt;-</span> bb_games <span class="sc">%&gt;%</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(sport <span class="sc">==</span> <span class="st">"WBB"</span> <span class="sc">&amp;</span> lose_team <span class="sc">%in%</span> wbb_n_champ) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(win_team) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unique</span>()</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>wbb_degree_sep <span class="ot">&lt;-</span> wbb_t_champs <span class="sc">%&gt;%</span> length</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(x <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>rounds){</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  wbb_t_champ_beaters <span class="ot">&lt;-</span> bb_games <span class="sc">%&gt;%</span> </span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(sport <span class="sc">==</span> <span class="st">"WBB"</span> <span class="sc">&amp;</span> lose_team <span class="sc">%in%</span> wbb_t_champs) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>(win_team) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">unique</span>()</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  wbb_t_champs <span class="ot">&lt;-</span> <span class="fu">c</span>(wbb_t_champs, wbb_t_champ_beaters)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  wbb_t_champs <span class="ot">&lt;-</span> wbb_t_champs[<span class="sc">!</span>wbb_t_champs <span class="sc">==</span> wbb_n_champ] <span class="co">#Remove the national champion from the transitive champs vector</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  wbb_degree_sep <span class="ot">&lt;-</span> <span class="fu">rbind</span>(wbb_degree_sep, wbb_t_champs <span class="sc">%&gt;%</span> <span class="fu">unique</span>() <span class="sc">%&gt;%</span> length)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>wbb_transitive_champs <span class="ot">&lt;-</span> wbb_degree_sep <span class="sc">%&gt;%</span> </span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind</span>(total_wbb_teams) <span class="sc">%&gt;%</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">transitive_champions =</span> V1,</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>         <span class="at">total_teams =</span> total_wbb_teams) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">degree_of_separation =</span> <span class="fu">row_number</span>(),</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>         <span class="at">transitive_champ_pct =</span> transitive_champions <span class="sc">/</span> total_teams,</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>         <span class="at">sport =</span> <span class="st">"WBB"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="mbb-calculations" class="level4">
+<h4 class="anchored" data-anchor-id="mbb-calculations">MBB calculations</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>mbb_t_champs <span class="ot">&lt;-</span> bb_games <span class="sc">%&gt;%</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(sport <span class="sc">==</span> <span class="st">"MBB"</span> <span class="sc">&amp;</span> lose_team <span class="sc">%in%</span> mbb_n_champ) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(win_team) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unique</span>()</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>mbb_degree_sep <span class="ot">&lt;-</span> mbb_t_champs <span class="sc">%&gt;%</span> length</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(x <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>rounds){</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  mbb_t_champ_beaters <span class="ot">&lt;-</span> bb_games <span class="sc">%&gt;%</span> </span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(sport <span class="sc">==</span> <span class="st">"MBB"</span> <span class="sc">&amp;</span> lose_team <span class="sc">%in%</span> mbb_t_champs) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>(win_team) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">unique</span>()</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  mbb_t_champs <span class="ot">&lt;-</span> <span class="fu">c</span>(mbb_t_champs, mbb_t_champ_beaters)</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  mbb_t_champs <span class="ot">&lt;-</span> mbb_t_champs[<span class="sc">!</span>mbb_t_champs <span class="sc">==</span> mbb_n_champ] <span class="co">#Remove the national champion from the transitive champs vector</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  mbb_degree_sep <span class="ot">&lt;-</span> <span class="fu">rbind</span>(mbb_degree_sep, mbb_t_champs <span class="sc">%&gt;%</span> <span class="fu">unique</span>() <span class="sc">%&gt;%</span> length)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>mbb_transitive_champs <span class="ot">&lt;-</span> mbb_degree_sep <span class="sc">%&gt;%</span> </span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind</span>(total_mbb_teams) <span class="sc">%&gt;%</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">transitive_champions =</span> V1,</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>         <span class="at">total_teams =</span> total_mbb_teams) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">degree_of_separation =</span> <span class="fu">row_number</span>(),</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>         <span class="at">transitive_champ_pct =</span> transitive_champions <span class="sc">/</span> total_teams,</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>         <span class="at">sport =</span> <span class="st">"MBB"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="bringing-the-transitive-champion-data-together" class="level4">
+<h4 class="anchored" data-anchor-id="bringing-the-transitive-champion-data-together">Bringing the transitive champion data together</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>transitive_champs <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  wbb_transitive_champs,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  mbb_transitive_champs) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sport =</span> <span class="fu">as_factor</span>(sport))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="results" class="level2">
+<h2 class="anchored" data-anchor-id="results">Results!</h2>
+<p>For the 2018-2019, I identified the following number of “transitive champs”:</p>
+<ul>
+<li><p>Women’s Basketball: <strong>360 transitive champions</strong></p></li>
+<li><p>Men’s Basketball: <strong>358 transitive champions</strong></p></li>
+</ul>
+<p>Each sport reached the total number of transitive champs within 8 degrees of separation of the national champion. However, transitive champs comprise 66% of total women’s Division I basketball teams compared to 55% in the men’s game, as the plot below shows. This could be due to an effect of major conference teams playing each other more in men’s basketball (limiting opportunities for minor conference teams to grab a transitive championship), but that hypothesis would have to be tested in further analysis.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>transitive_champs <span class="sc">%&gt;%</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>degree_of_separation, <span class="at">y=</span>transitive_champ_pct, <span class="at">color =</span> sport)) <span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"How many basketball teams beat a team, who beat a team, </span><span class="sc">\n</span><span class="st">who.... beat the national champ?"</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Analysis of 2018-2019 college basketball games"</span>) <span class="sc">+</span> </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="at">rows =</span> <span class="fu">vars</span>(sport), <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="st">"Degrees of Separation from Actual National Champion"</span>) <span class="sc">+</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="st">"Cumulative % of Teams"</span>, <span class="at">labels =</span> scales<span class="sc">::</span>percent) <span class="sc">+</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/t_champs%20plot-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
